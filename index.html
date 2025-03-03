@@ -70,8 +70,8 @@ async function fetchCryptoData() {
                 <div class="w-[95%] h-[50px] my-2 gap-5 flex border-b-1 *:h-full *:w-1/5 *:flex *:justify-center *:items-center">
                     <figure><img class="w-[30px] h-[30px] rounded-b-full" src="${val.image}" alt=""></figure>
                     <div class="text-textpurple ${nameClass}">${val.name}</div>
-                    <div class="text-white text-[12px] lg:text-[18px]">${val.price_change_percentage_24h.toFixed(2)}%</div>
-                    <div class="text-textgray text-[11px] lg:text-[14px]">${val.market_cap.toLocaleString()}</div>
+                    <div class="text-white text-[2px] lg:text-[18px]">${val.price_change_percentage_24h.toFixed(2)}%</div>
+                    <div class="text-textgray text-[1px] lg:text-[14px]">${val.market_cap.toLocaleString()}</div>
                     <div class="text-textpurple text-[13px] lg:text-[18px] ">$${val.current_price.toFixed(2)}</div>
                 </div>
             `

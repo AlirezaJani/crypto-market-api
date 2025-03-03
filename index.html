@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/output.css">
+    <link rel="stylesheet" href="css/input.css">
+    <link rel="stylesheet" href="css/master.css">
+    <title>Document</title>
+</head>
+<body class="m-0 p-0 box-border">
+    <main class="w-full h-screen flex justify-center items-center bg-bgGray overflow-hidden" >
+        <div class="w-11/12 h-screen lg:w-[600px] lg:h-[600px] gap-2 bg-maindiv flex flex-col justify-center items-center rounded-3xl ">
+            <!-- search inp -->
+            <div class="w-6/12 h-1/12 bg-textgray rounded-4xl overflow-hidden ">
+                <input id="inp" type="text" class="w-full h-full rounded-3xl text-center text-white" placeholder="Search a coin">
+            </div>
+            <!-- coin list -->
+             <div id="coinList" class="h-11/12 w-11/12 flex flex-col ">
+                <!-- list of titele -->
+                <div class="w-full flex items-center justify-end ">
+                    <ul class="w-[90%]  mx-auto flex justify-between items-center   *:text-white *:list-none  ">
+                        <li class="text-[15px] lg:text-[18px] ">coin</li>
+                        <li class="text-[15px] lg:text-[18px] ">Name</li>
+                        <li class="text-[15px] lg:text-[18px] tracking-tighter"> 24h %</li>
+                        <li class="text-[15px] lg:text-[18px] ">Market cap</li>
+                        <li class="text-[15px] lg:text-[18px] pe-6 ">Price</li>
+                    </ul>
+                </div>
+                <!-- main sec -->
+                 <section id="mainsec" class="overflow-x-hidden overflow-y-scroll">
+                    <!-- <div class="w-[95%]  h-[50px] my-2 flex border-b-1 *:h-full *:w-1/5  *:flex *:justify-center *:items-center">
+                        <figure><img class="w-[30px] h-[30px] rounded-b-full" src="" alt=""></figure>
+                        <div class="text-textpurple text-[13px] lg:text-[18px] ">jkhawjkhwda</div>
+                        <div class="text-white  text-[13px] lg:text-[18px] ">86767</div>
+                        <div class="text-white  text-[13px] lg:text-[18px] ">213387877887</div>
+                        <div class="text-textpurple  text-[13px] lg:text-[18px] ">7411322</div>
+                     </div> -->
+
+                 </section>
+               
+             </div>
+
+
+        </div>
+
+
+    </main>
+</body>
+<script>
+    let clonedata = [];
+    const mainsec = document.getElementById('mainsec');
+    const inp = document.getElementById('inp');
+    console.log("Updated every 10 minutes.");
+    
+
+async function fetchCryptoData() {
+    try {
+        const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false');
+        const data = await response.json();
+        clonedata = data
+        console.log("Updated");
+
+        mainsec.innerHTML = "";
+
+        data.map((val) => {
+            const div = document.createElement('div');
+            let nameClass = val.name.length > 14 ? "text-[12px] lg:text-[14px]" : "text-[14px] lg:text-[18px]";
+            div.innerHTML = `
+                <div class="w-[95%] h-[50px] my-2 gap-5 flex border-b-1 *:h-full *:w-1/5 *:flex *:justify-center *:items-center">
+                    <figure><img class="w-[30px] h-[30px] rounded-b-full" src="${val.image}" alt=""></figure>
+                    <div class="text-textpurple ${nameClass}">${val.name}</div>
+                    <div class="text-white text-[13px] lg:text-[18px]">${val.price_change_percentage_24h.toFixed(2)}%</div>
+                    <div class="text-textgray text-[13px] lg:text-[14px]">${val.market_cap.toLocaleString()}</div>
+                    <div class="text-textpurple text-[13px] lg:text-[18px] ">$${val.current_price.toFixed(2)}</div>
+                </div>
+            `
+            mainsec.appendChild(div);
+        });
+
+    } catch (error) {
+        console.error("Error receiving data", error);
+    }
+}
+
+    fetchCryptoData();
+
+    setInterval(fetchCryptoData, 600000);
+
+    // search function
+    inp.addEventListener('keyup',()=>{
+    let _value = inp.value;
+    const inpval = _value.charAt(0).toUpperCase() + _value.slice(1);
+    mainsec.innerHTML = "";
+    clonedata.map((val)=>{
+        if (val.name.indexOf(inpval)>=0) {
+            const div = document.createElement('div');
+            div.innerHTML = `
+                <div class="w-[95%] h-[50px] my-2 gap-5 flex border-b-1 *:h-full *:w-1/5 *:flex *:justify-center *:items-center">
+                    <figure><img class="w-[30px] h-[30px] rounded-b-full" src="${val.image}" alt=""></figure>
+                    <div class="text-textpurple text-[14px] lg:text-[18px]">${val.name}</div>
+                    <div class="text-white text-[13px] lg:text-[18px]">${val.price_change_percentage_24h.toFixed(2)}%</div>
+                    <div class="text-textgray text-[13px] lg:text-[14px]">${val.market_cap.toLocaleString()}</div>
+                    <div class="text-textpurple text-[13px] lg:text-[18px] ">$${val.current_price.toFixed(2)}</div>
+                </div>
+            `
+            mainsec.appendChild(div);
+            
+
+            
+        }
+    })
+
+
+    
+
+ })
+
+</script>
+</html>

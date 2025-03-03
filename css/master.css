@@ -1,0 +1,13 @@
+#mainsec::-webkit-scrollbar {
+    width: 8px;
+  }
+  #mainsec::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+  #mainsec:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+  #mainsec::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
